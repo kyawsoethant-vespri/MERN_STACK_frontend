@@ -1,5 +1,27 @@
+import { Link, Outlet } from "react-router-dom";
+
 function App() {
-  return <h1 className="text-blue-500 text-3xl">Hello world</h1>;
+  return (
+    <>
+      <nav>
+        <ul>
+          <li>
+            <Link to={"/"}>Home</Link>
+          </li>
+          <li>
+            <Link to={"/about"}>About</Link>
+          </li>
+          <li>
+            <Link to={"/contact"}>Contact</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <div>
+        <Outlet />
+      </div>
+    </>
+  );
 }
 
 export default App;
