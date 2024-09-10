@@ -1,0 +1,25 @@
+.nav {
+  @apply flex justify-between items-center p-5 bg-white fixed top-0 left-0 w-full;
+}
+
+.logoContainer {
+  @apply flex items-center;
+}
+
+.logo {
+  @apply w-10 h-auto mr-[10px];
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.3);
+  filter: brightness(1.1);
+}
+
+.h1 {
+  @apply font-bold text-2xl pr-10 text-orange-400 hover:text-orange-500;
+}
+
+.link {
+  @apply hover:text-orange-400;
+}
