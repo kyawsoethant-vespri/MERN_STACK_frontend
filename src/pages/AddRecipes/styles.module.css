@@ -1,0 +1,19 @@
+.container {
+  @apply mx-auto max-w-md mt-14 shadow-2xl border border-white p-4 rounded-lg;
+}
+
+.title {
+  @apply text-center text-2xl font-bold text-orange-400 mb-6;
+}
+
+.inputField {
+  @apply w-full p-1;
+}
+
+.icon {
+  @apply cursor-pointer;
+}
+
+.button {
+  @apply w-full px-3 py-1 rounded-full bg-orange-400 text-white;
+}

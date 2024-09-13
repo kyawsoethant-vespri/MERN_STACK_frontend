@@ -1,4 +1,5 @@
-import Styles from "./styles.module.css";
+import Ingredients from "../Ingredients/ingredients";
+import styles from "./styles.module.css";
 
 const RecipeCard = ({ recipe }) => {
   //Transform DateFormat Function
@@ -12,22 +13,14 @@ const RecipeCard = ({ recipe }) => {
 
   return (
     <div className="bg-white p-5 rounded-2xl space-y-3">
-      <h3 className={Styles.title}>{recipe.title}</h3>
+      <h3 className={styles.title}>{recipe.title}</h3>
 
       <p>Description</p>
       <p>{recipe.description}</p>
 
-      <div className="space-x-2">
-        <span>Ingredients -</span>
-        {recipe.ingredients.length &&
-          recipe.ingredients.map((ingredient, index) => (
-            <span key={index} className={Styles.ingredients}>
-              {ingredient}
-            </span>
-          ))}
-      </div>
+      <Ingredients ingredients={recipe.ingredients} />
 
-      <p className={Styles.publishTimeText}>
+      <p className={styles.publishTimeText}>
         Published at - {dateFormat(recipe.createdAt)}
       </p>
     </div>

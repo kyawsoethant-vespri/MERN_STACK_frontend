@@ -16,7 +16,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="space-y-3 mt-20">
+    <div className="space-y-3">
       {!!recipes.length &&
         recipes.map((recipe) => (
           <RecipeCard recipe={recipe} key={recipe._id} />

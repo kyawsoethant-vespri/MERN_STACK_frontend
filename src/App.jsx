@@ -7,7 +7,7 @@ function App() {
       <div className="flex flex-col">
         <NavBar />
 
-        <div className="p-5">
+        <div className="p-5 mt-20">
           <Outlet />
         </div>
       </div>

@@ -2,10 +2,6 @@
   @apply text-xl text-orange-400 font-bold;
 }
 
-.ingredients {
-  @apply bg-orange-400 text-white text-sm px-2 py-1 rounded-full;
-}
-
 .publishTimeText {
   @apply text-gray-500;
 }

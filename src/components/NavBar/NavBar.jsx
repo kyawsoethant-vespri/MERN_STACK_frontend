@@ -33,6 +33,11 @@ const NavBar = () => {
               Contact
             </Link>
           </li>
+          <li>
+            <Link to={"/recipes/create"} className={Styles.link}>
+              Create Recipes
+            </Link>
+          </li>
         </ul>
       </nav>
     </>
