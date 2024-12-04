@@ -1,0 +1,23 @@
+.modalOverlay {
+  @apply fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center z-50;
+}
+
+.modal {
+  @apply bg-white p-5 rounded-lg shadow-md text-center max-w-md w-full;
+}
+
+.message {
+  @apply font-bold text-lg text-orange-500;
+}
+
+.buttons {
+  @apply mt-5 flex justify-between;
+}
+
+.confirmButton {
+  @apply bg-green-600 text-white text-sm px-5 py-2 rounded-lg cursor-pointer hover:bg-green-700;
+}
+
+.cancelButton {
+  @apply bg-red-600 text-white text-sm px-5 py-2 rounded-lg cursor-pointer hover:bg-red-700;
+}

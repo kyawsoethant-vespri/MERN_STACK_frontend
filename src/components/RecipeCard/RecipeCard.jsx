@@ -1,30 +1,108 @@
+import React, { useState } from "react";
+import axios from "axios";
 import Ingredients from "../Ingredients/ingredients";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./styles.module.css";
+import ConfirmationModalPopup from "../ComfirmationModalPopup/ConfirmationModalPopup";
 
-const RecipeCard = ({recipe}) => {
-    //Transform DateFormat Function
-    const dateFormat = (date) => {
-        return new Date(date).toLocaleDateString("en-US", {
-            month: "long",
-            day: "2-digit",
-            year: "numeric",
-        });
-    };
+const RecipeCard = ({ recipe, onDeleted }) => {
+  const [showModal, setShowModal] = useState(false);
 
-    return (
-        <div className="bg-white p-5 rounded-2xl space-y-3">
-            <h3 className={styles.title}>{recipe.title}</h3>
+  const dateFormat = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "2-digit",
+      year: "numeric",
+    });
+  };
 
-            <p className={styles.description}>Description</p>
-            <p>{recipe.description}</p>
+  const showToastSuccess = (message) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  };
 
-            <Ingredients ingredients={recipe.ingredients}/>
+  const showToastError = (message) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  };
 
-            <p className={styles.publishTimeText}>
-                Published at - {dateFormat(recipe.createdAt)}
-            </p>
-        </div>
-    );
+  const deleteRecipe = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/recipes/${recipe._id}`
+      );
+      if (response.status === 200) {
+        onDeleted(recipe._id);
+        showToastSuccess("Recipe deleted successfully");
+      } else {
+        showToastError("Failed to delete the recipe. Please try again.");
+      }
+    } catch (error) {
+      showToastError("An error occurred while deleting the recipe.");
+    }
+  };
+
+  const handleDelete = () => {
+    setShowModal(true); // Show the confirmation modal
+  };
+
+  const confirmDelete = () => {
+    setShowModal(false);
+    deleteRecipe(); // Call the delete function if confirmed
+  };
+
+  const cancelDelete = () => {
+    setShowModal(false); // Hide the modal if canceled
+  };
+
+  return (
+    <div className={styles.container}>
+      <ToastContainer />
+      <div className={styles.titleBtnContainer}>
+        <h3 className={styles.title}>{recipe.title}</h3>
+
+        <button className={styles.deleteBtn} onClick={handleDelete}>
+          Delete
+        </button>
+      </div>
+
+      <p className={styles.description}>Description</p>
+      <p>{recipe.description}</p>
+
+      <Ingredients ingredients={recipe.ingredients} />
+
+      <p className={styles.publishDateTime}>
+        Published at - {dateFormat(recipe.createdAt)}
+      </p>
+
+      {showModal && (
+        <ConfirmationModalPopup
+          message="Are you sure you want to delete this recipe?"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
+      )}
+    </div>
+  );
 };
 
 export default RecipeCard;

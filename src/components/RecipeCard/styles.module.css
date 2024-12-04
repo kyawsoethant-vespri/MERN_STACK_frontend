@@ -1,11 +1,23 @@
-.title {
-    @apply text-3xl text-orange-400 font-bold;
+.container {
+  @apply bg-white p-5 rounded-2xl space-y-3;
 }
 
-.publishTimeText {
-    @apply text-gray-500;
+.titleBtnContainer {
+  @apply flex justify-between;
+}
+
+.title {
+  @apply text-3xl text-orange-400 font-bold;
+}
+
+.publishDateTime {
+  @apply text-gray-500;
 }
 
 .description {
-    @apply font-bold text-amber-500 text-xl;
+  @apply font-bold text-amber-500 text-xl;
+}
+
+.deleteBtn {
+  @apply bg-red-500 px-2 py-1 rounded-lg text-white text-sm;
 }
