@@ -1,7 +1,11 @@
 .title {
-  @apply text-xl text-orange-400 font-bold;
+    @apply text-3xl text-orange-400 font-bold;
 }
 
 .publishTimeText {
-  @apply text-gray-500;
+    @apply text-gray-500;
+}
+
+.description {
+    @apply font-bold text-amber-500 text-xl;
 }
