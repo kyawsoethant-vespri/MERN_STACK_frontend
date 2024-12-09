@@ -1,11 +1,14 @@
 import styles from "./styles.module.css";
 import Plus from "../../assets/plus_icon.svg";
 import Ingredients from "../../components/Ingredients/ingredients";
+import ToastSuccess from "../../utils/Toast/ToastSuccess";
+import ToastError from "../../utils/Toast/ToastError";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 const RecipesForm = () => {
   const [newIngredient, setNewIngredient] = useState("");
@@ -15,73 +18,82 @@ const RecipesForm = () => {
   const [errors, setErrors] = useState([]);
 
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const addIngredient = () => {
     setIngredients((prev) => [newIngredient, ...prev]);
     setNewIngredient("");
   };
 
-  //Toast success message function
-  const showToastSuccess = (message) => {
-    toast.success(message, {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  };
+  //Create and Update
+  const createRecipe = (e) => handleRecipeSubmit(e, "create");
+  const updateRecipe = (e) => handleRecipeSubmit(e, "update", id);
 
-  //Toast error message function
-  const showToastError = (message) => {
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  };
-
-  const createRecipe = async (e) => {
+  const handleRecipeSubmit = async (e, action, recipeId) => {
     try {
       e.preventDefault();
       const recipes = { title, description, ingredients };
-      console.log("Data", recipes);
 
-      const response = await axios.post(
-        "http://localhost:8000/api/recipes/insert",
-        recipes
-      );
+      const url =
+        action === "create"
+          ? "http://localhost:8000/api/recipes/insert"
+          : `http://localhost:8000/api/recipes/${recipeId}`;
+
+      const method = action === "create" ? axios.post : axios.patch;
+
+      const response = await method(url, recipes);
+
       if (response.status === 200) {
-        showToastSuccess("Created recipe successfully.");
+        const successMessage =
+          action === "create"
+            ? "Created recipe successfully."
+            : "Updated recipe successfully.";
+
+        ToastSuccess(successMessage);
         setTimeout(() => {
           navigate("/");
         }, 1000);
       }
-    } catch (e) {
+    } catch (error) {
       setErrors(Object.keys(e.response.data.errors));
       if (errors) {
-        showToastError("Something went wrong. Please try again.");
+        ToastError("Something went wrong. Please try again.");
       }
     }
   };
+
+  //Edit fetching
+  useEffect(() => {
+    const editFetchRecipe = async () => {
+      if (id) {
+        const response = await axios.get(
+          `http://localhost:8000/api/recipes/${id}`
+        );
+        if (response.status === 200) {
+          setTitle(response.data.title);
+          setDescription(response.data.description);
+          setIngredients(response.data.ingredients);
+        }
+      }
+    };
+    editFetchRecipe();
+    //Clear data on clean up
+    setTitle("");
+    setDescription("");
+    setIngredients("");
+  }, [id]);
 
   return (
     <div className={styles.container}>
       <ToastContainer />
 
-      <h1 className={styles.title}>Recipes Create Form</h1>
+      <h1 className={styles.title}>Recipes {id ? "Edit" : "Create"} Form</h1>
 
-      <form action="" className="space-y-5" onSubmit={createRecipe}>
+      <form
+        action=""
+        className="space-y-5"
+        onSubmit={id ? updateRecipe : createRecipe}
+      >
         <input
           type="text"
           placeholder="Recipe Title"
@@ -119,7 +131,7 @@ const RecipesForm = () => {
         </div>
 
         <button type="submit" className={styles.button}>
-          Create Recipe
+          {id ? "Update " : "Create "}Recipe
         </button>
       </form>
     </div>

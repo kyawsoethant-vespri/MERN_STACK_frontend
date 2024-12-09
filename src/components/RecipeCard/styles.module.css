@@ -18,6 +18,26 @@
   @apply font-bold text-amber-500 text-xl;
 }
 
+.btnContainer {
+  @apply space-x-2;
+}
+
 .deleteBtn {
   @apply bg-red-500 px-2 py-1 rounded-lg text-white text-sm;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.deleteBtn:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+.editBtn {
+  @apply bg-yellow-400 px-3 py-1 rounded-lg text-black text-sm;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.editBtn:hover {
+  transform: scale(1.2);
+  filter: brightness(1.1);
 }

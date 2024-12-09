@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Ingredients from "../Ingredients/ingredients";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import ToastSuccess from "../../utils/Toast/ToastSuccess";
+import ToastError from "../../utils/Toast/ToastError";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./styles.module.css";
 import ConfirmationModalPopup from "../ComfirmationModalPopup/ConfirmationModalPopup";
+import { Link } from "react-router-dom";
 
 const RecipeCard = ({ recipe, onDeleted }) => {
   const [showModal, setShowModal] = useState(false);
@@ -17,34 +20,6 @@ const RecipeCard = ({ recipe, onDeleted }) => {
     });
   };
 
-  const showToastSuccess = (message) => {
-    toast.success(message, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  };
-
-  const showToastError = (message) => {
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      transition: Bounce,
-    });
-  };
-
   const deleteRecipe = async () => {
     try {
       const response = await axios.delete(
@@ -52,12 +27,12 @@ const RecipeCard = ({ recipe, onDeleted }) => {
       );
       if (response.status === 200) {
         onDeleted(recipe._id);
-        showToastSuccess("Recipe deleted successfully");
+        ToastSuccess(`Recipe deleted successfully`);
       } else {
-        showToastError("Failed to delete the recipe. Please try again.");
+        ToastError("Failed to delete the recipe. Please try again.");
       }
     } catch (error) {
-      showToastError("An error occurred while deleting the recipe.");
+      ToastError("An error occurred while deleting the recipe.");
     }
   };
 
@@ -79,10 +54,15 @@ const RecipeCard = ({ recipe, onDeleted }) => {
       <ToastContainer />
       <div className={styles.titleBtnContainer}>
         <h3 className={styles.title}>{recipe.title}</h3>
+        <div className={styles.btnContainer}>
+          <button className={styles.editBtn}>
+            <Link to={`/recipes/edit/${recipe._id}`}>Edit</Link>
+          </button>
 
-        <button className={styles.deleteBtn} onClick={handleDelete}>
-          Delete
-        </button>
+          <button className={styles.deleteBtn} onClick={handleDelete}>
+            Delete
+          </button>
+        </div>
       </div>
 
       <p className={styles.description}>Description</p>
