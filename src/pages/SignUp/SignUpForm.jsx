@@ -31,7 +31,7 @@ const SignUpForm = () => {
                     navigate("/sign-in")
                 }, 1000);
             }
-
+            //Clear data
             setName("")
             setEmail("")
             setPassword("")
