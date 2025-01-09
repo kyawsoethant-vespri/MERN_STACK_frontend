@@ -1,7 +1,12 @@
 import {Link} from "react-router-dom";
 import Styles from "./styles.module.css";
+import {AuthContext} from "../../Context/AuthContext.jsx";
+import {useContext} from "react";
 
 const NavBar = () => {
+    const {name} = useContext(AuthContext);
+    console.log(name)
+
     return (
         <>
             <nav className={Styles.nav}>

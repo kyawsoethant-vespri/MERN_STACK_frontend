@@ -9,6 +9,7 @@ import Contact from "./pages/Contact/Contact.jsx";
 import RecipesForm from "./pages/AddRecipes/RecipesForm.jsx";
 import SignUpForm from "./pages/SignUp/SignUpForm.jsx";
 import SignInForm from "./pages/SignIn/SignInForm.jsx";
+import {AuthContextProvider} from "./Context/AuthContext.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <RouterProvider router={router}/>
+        <AuthContextProvider>
+            <RouterProvider router={router}/>
+        </AuthContextProvider>
     </StrictMode>
 );

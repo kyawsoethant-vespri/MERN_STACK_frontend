@@ -4,7 +4,7 @@ import Ingredients from "../../components/Ingredients/ingredients";
 import ToastSuccess from "../../utils/Toast/ToastSuccess";
 import ToastError from "../../utils/Toast/ToastError";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import axios from "../../helpers/baseUrl.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,8 +35,8 @@ const RecipesForm = () => {
 
             const url =
                 action === "create"
-                    ? "http://localhost:8000/api/recipes/insert"
-                    : `http://localhost:8000/api/recipes/${recipeId}`;
+                    ? "/api/recipes/insert"
+                    : `/api/recipes/${recipeId}`;
 
             const method = action === "create" ? axios.post : axios.patch;
 
@@ -66,7 +66,7 @@ const RecipesForm = () => {
         const editFetchRecipe = async () => {
             if (id) {
                 const response = await axios.get(
-                    `http://localhost:8000/api/recipes/${id}`
+                    `/api/recipes/${id}`
                 );
                 if (response.status === 200) {
                     setTitle(response.data.title);

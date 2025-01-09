@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 import {useState} from "react";
-import axios from "axios";
+import axios from "../../helpers/baseUrl.js";
 import ToastSuccess from "../../utils/Toast/ToastSuccess.js";
 import {useNavigate} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
@@ -19,7 +19,7 @@ const SignUpForm = () => {
                 email: email,
                 password: password,
             }
-            const response = await axios.post("http://localhost:8000/api/users/login", data, {withCredentials: true})
+            const response = await axios.post("/api/users/login", data, {withCredentials: true})
             if (response.status === 200) {
                 const successMessage = "Welcome,Login successful.";
                 ToastSuccess(successMessage);
