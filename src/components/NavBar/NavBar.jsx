@@ -1,11 +1,30 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Styles from "./styles.module.css";
 import {AuthContext} from "../../Context/AuthContext.jsx";
 import {useContext} from "react";
+import axios from "../../helpers/baseUrl.js";
 
 const NavBar = () => {
-    const {name} = useContext(AuthContext);
-    console.log(name)
+    const {user} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const {dispatch} = useContext(AuthContext);
+
+    const logout = async () => {
+        try {
+            const res = await axios.post("/api/users/logout");
+            if (res.status === 200) {
+                dispatch({type: "LOGOUT"});
+                setTimeout(() => {
+                    navigate("/sign-in");
+                }, 1000);
+            } else {
+                console.error("Unexpected response status:", res.status);
+            }
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
+
 
     return (
         <>
@@ -43,16 +62,23 @@ const NavBar = () => {
                             Create Recipes
                         </Link>
                     </li>
-                    <li>
-                        <Link to={"/sign-in"} className={Styles.link}>
-                            Login
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={"/sign-up"} className={Styles.link}>
-                            Register
-                        </Link>
-                    </li>
+                    {!user ? (<>
+                        <li>
+                            <Link to={"/sign-in"} className={Styles.link}>
+                                Login
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to={"/sign-up"} className={Styles.link}>
+                                Register
+                            </Link>
+                        </li>
+                    </>) : (<li>
+                        <button onClick={logout} className={Styles.link}>
+                            Logout
+                        </button>
+                    </li>)
+                    }
                 </ul>
             </nav>
         </>

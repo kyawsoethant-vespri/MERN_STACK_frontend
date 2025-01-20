@@ -1,10 +1,11 @@
-import {Outlet} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
+import {Outlet} from "react-router-dom";
 
 function App() {
     return (
         <>
             <div className="flex flex-col">
+
                 <NavBar/>
 
                 <div className="p-5 mt-20">

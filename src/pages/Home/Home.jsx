@@ -29,7 +29,7 @@ const Home = () => {
                 setLinks(data.links);
                 setRecipes(data.recipesData);
             }
-        };
+        }
         fetchRecipes();
 
         //scroll to top

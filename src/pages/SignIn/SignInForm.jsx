@@ -1,19 +1,17 @@
 import styles from './styles.module.css';
-import {useState} from "react";
+import {useContext, useState} from "react";
 import axios from "../../helpers/baseUrl.js";
-import ToastSuccess from "../../utils/Toast/ToastSuccess.js";
-import {useNavigate} from "react-router-dom";
-import {ToastContainer} from "react-toastify";
+import {AuthContext} from "../../Context/AuthContext.jsx";
 
 const SignUpForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState('');
-    const navigate = useNavigate();
+    const {dispatch} = useContext(AuthContext);
 
     const login = async (e) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
             setErrors(null)
             const data = {
                 email: email,
@@ -21,11 +19,7 @@ const SignUpForm = () => {
             }
             const response = await axios.post("/api/users/login", data, {withCredentials: true})
             if (response.status === 200) {
-                const successMessage = "Welcome,Login successful.";
-                ToastSuccess(successMessage);
-                setTimeout(() => {
-                    navigate("/")
-                }, 1000);
+                dispatch({type: "LOGIN", payload: response.data.user})
             }
             //Clear data
             setEmail("")
@@ -37,8 +31,8 @@ const SignUpForm = () => {
     }
 
     return (
+
         <div className={styles.container}>
-            <ToastContainer/>
             <form onSubmit={login} className={styles.form}>
                 <h1 className={styles.heading}>Login Form</h1>
                 <div className="mb-4">
